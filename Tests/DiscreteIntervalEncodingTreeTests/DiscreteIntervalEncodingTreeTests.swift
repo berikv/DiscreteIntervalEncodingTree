@@ -3,6 +3,31 @@ import XCTest
 
 final class DiscreteIntervalEncodingTreeTests: XCTestCase {
 
+    // MARK: - Examples
+
+    func test_examples() {
+        var diet = DiscreteIntervalEncodingTree<Int>()
+        XCTAssertEqual(Array(diet), []) // Array(diet) -> []
+
+        diet.add(5)
+        XCTAssertEqual(Array(diet), [5...5]) // Array(diet) -> [5...5]
+
+        diet.add(7...10)
+        XCTAssertEqual(Array(diet), [5...5, 7...10]) // Array(diet) -> [5...5, 7...10]
+
+        diet.add(6)
+        XCTAssertEqual(Array(diet), [5...10]) // Array(diet) -> [5...10]
+
+        diet.remove(7...8)
+        XCTAssertEqual(Array(diet), [5...6, 9...10]) // Array(diet) -> [5...6, 9...10]
+
+        // O(log n) complexity for lookup on these methods
+
+        XCTAssertTrue(diet.overlaps(-10...5))
+        XCTAssertEqual(diet.first(overlapping: 10...15), 9...10)
+        XCTAssertEqual(diet.firstIndex(overlapping: 10...15), 1)
+    }
+
     // MARK: - Init
 
     func test_init_noArg() {
